@@ -6,8 +6,8 @@ const cards = document.querySelector(".cards");
 
 axios
   .get("https://api.github.com/users/briworkman")
-  .then(results => {
-    const newCard = createCard(results.data);
+  .then(response => {
+    const newCard = createCard(response.data);
     cards.appendChild(newCard);
 
     //Stretch
@@ -55,12 +55,9 @@ followersArray = [
 ];
 
 followersArray.forEach(follower =>
-  axios
-    .get(`https://api.github.com/users/${follower}`)
-    .then(res => {
-      cards.appendChild(createCard(res.data));
-    })
-    .catch(err => console.log(err))
+  axios.get(`https://api.github.com/users/${follower}`).then(response => {
+    cards.appendChild(createCard(response.data));
+  })
 );
 
 /* Step 3: Create a function that accepts a single object as its only argument,
@@ -126,6 +123,22 @@ function createCard(data) {
 
   return card;
 }
+
+//Stretch
+//Instead of manually creating a list of followers, do it programmatically.
+// Create a function that requests the followers data from the API after it has
+//received your data and create a card for each of your followers. Hint: you can chain promises.
+axios
+  .get("https://api.github.com/users/briworkman/followers")
+  .then(response => {
+    response.data.forEach(follower =>
+      axios
+        .get(`https://api.github.com/users/${follower.login}`)
+        .then(response => {
+          cards.appendChild(createCard(response.data));
+        })
+    );
+  });
 
 /* List of LS Instructors Github username's: 
   tetondan
