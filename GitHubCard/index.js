@@ -9,6 +9,15 @@ axios
   .then(results => {
     const newCard = createCard(results.data);
     cards.appendChild(newCard);
+
+    //Stretch
+    const calendarDiv = document.createElement("div");
+    cards.appendChild(calendarDiv);
+
+    calendarDiv.classList.add("calendar");
+
+    new GitHubCalendar(".calendar", "briworkman");
+    //Stretch
   })
 
   .catch(err => {
